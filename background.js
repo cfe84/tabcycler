@@ -2,6 +2,10 @@ let intervalId;
 let rotationInterval = 5000; 
 let refreshAfterRotate = true;
 
+if (!browser) {
+  var browser = chrome;
+}
+
 function start() {
   refreshSettingsAsync();
 }
@@ -37,14 +41,12 @@ browser.runtime.onMessage.addListener((message) => {
 
 function getSettingsAsync() {
   return new Promise(resolve => {
-    browser.storage.sync.get(['rotationInterval', 'refreshAfterRotate']).then((result) => {
-      resolve(result);
-    });
+    browser.storage.sync.get(['rotationInterval', 'refreshAfterRotate'], (result) => resolve(result));
   });
 }
 
 async function rotateTabAsync() {
-  let tabs = await browser.tabs.query({});
+  let tabs = await getTabsAsync();
   let activeTab = tabs.find(tab => tab.active);
   let currentIndex = tabs.indexOf(activeTab);
   let nextIndex = (currentIndex + 1) % tabs.length;
@@ -54,6 +56,12 @@ async function rotateTabAsync() {
   if (refreshAfterRotate) {
     browser.tabs.reload(tabs[currentIndex].id);  // Refresh the previously active tab
   }
+}
+
+async function getTabsAsync() {
+  return new Promise(resolve => {
+    browser.tabs.query({}, (tabs) => resolve(tabs));
+  });
 }
 
 start();

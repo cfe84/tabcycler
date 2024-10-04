@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "TabCycler",
-  "version": "1.0",
+  "version": "1.0.1",
   "description": "Cycles tabs every few seconds. Optionally reloads the tabs when they're hidden. Works on Android too.",
   "permissions": ["tabs", "storage"],
   "background": {

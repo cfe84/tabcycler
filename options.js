@@ -1,3 +1,7 @@
+if (typeof browser === 'undefined') {
+  browser = chrome;
+}
+
 document.getElementById('save').addEventListener('click', () => {
   const interval = document.getElementById('interval').value * 1000;
   const refresh = document.getElementById('refresh').checked;
